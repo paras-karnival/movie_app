@@ -15,14 +15,15 @@ import 'config/dependency_injection/di.dart';
  await dotenv.load(fileName: ".env");
  serviceLocator.setup();
  await di.allReady();
-   runApp(MultiBlocProvider(
-       providers: [
-         // Blocs which have single instance all over the app
-         // BlocProvider(
-         //     create: (context) => GetPopularMoviesBloc()..add(GetPopularMoviesAPIRequestEvent(pageNo: 1, language: 'en-us'))),
-         BlocProvider(create: (_) => LoginBloc()),
-       ],
-       child: MyApp()));
+ runApp(MyApp());
+   // runApp(MultiBlocProvider(
+   //     providers: [
+   //       // Blocs which have single instance all over the app
+   //       // BlocProvider(
+   //       //     create: (context) => GetPopularMoviesBloc()..add(GetPopularMoviesAPIRequestEvent(pageNo: 1, language: 'en-us'))),
+   //
+   //     ],
+   //     child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
