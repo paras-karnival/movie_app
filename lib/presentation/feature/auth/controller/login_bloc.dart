@@ -7,6 +7,7 @@ import 'package:movie_app/data/data_utility/data_utility.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'login_event.dart';
+
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
@@ -16,10 +17,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(LoadingLoginState());
         await Future.delayed(Duration(seconds: 2));
         debuggerAdvance(tag: event.email, value: event.password);
-        if(event.email != "admin@gmail.com" || event.password != "admin")
-          {
-            throw ExceptionStrings.unAuthorised;
-          }
+        if (event.email != "admin@gmail.com" || event.password != "admin") {
+          throw ExceptionStrings.unAuthorised;
+        }
         di<SharedPreferences>().setBool(SharedPrefsKeys.isAuthenticated, true);
         emit(LoadedLoginState(statusCode: 200));
       } catch (e) {

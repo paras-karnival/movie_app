@@ -2,14 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/core/utils/app_strings.dart';
 import 'package:movie_app/data/data_utility/api_end_points.dart';
-import 'package:movie_app/domain/models/now_playing_movie_res_model.dart'
-    as now_playing;
-import 'package:movie_app/domain/models/popular_movies_res_model.dart'
-    as popular;
-import 'package:movie_app/domain/models/top_rated_movie_res_model.dart'
-    as top_rated;
-import 'package:movie_app/domain/models/upcoming_movie_res_model.dart'
-    as upcoming;
+import 'package:movie_app/domain/models/movie_res_model.dart';
 import 'package:movie_app/presentation/common_widgets/common_widgets.dart';
 import 'package:movie_app/presentation/feature/home/controller/get_popular_movies/get_popular_movies_bloc.dart';
 import 'package:movie_app/presentation/feature/home/controller/now_playing/now_playing_movie_bloc.dart';
@@ -25,139 +18,67 @@ class HomePage extends StatelessWidget {
     return SafeArea(
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_)=> GetPopularMoviesBloc()
-            ..add(GetPopularMoviesAPIRequestEvent(
-                pageNo: 1, language: 'en-us'))),
+          BlocProvider(
+              create: (_) => GetPopularMoviesBloc()
+                ..add(GetPopularMoviesAPIRequestEvent(
+                    pageNo: 1, language: 'en-us'))),
         ],
-        child:  Scaffold(
-      appBar: CustomAppbar(
-      title: AppStrings.movieu,
-        hasArrow: false,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            BlocBuilder<GetPopularMoviesBloc , GetPopularMoviesState>(
-                // bloc: GetPopularMoviesBloc()
-                //   ..add(GetPopularMoviesAPIRequestEvent(
-                //       pageNo: 1, language: 'en-us')),
-                builder: (context, GetPopularMoviesState state) {
+        child: Scaffold(
+          appBar: CustomAppbar(
+            title: AppStrings.movieu,
+            hasArrow: false,
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                BlocBuilder<GetPopularMoviesBloc, GetPopularMoviesState>(
+                    // bloc: GetPopularMoviesBloc()
+                    //   ..add(GetPopularMoviesAPIRequestEvent(
+                    //       pageNo: 1, language: 'en-us')),
+                    builder: (context, GetPopularMoviesState state) {
                   return _ViewWrapper(
                     showLoader: state.showLoader,
-                    listLength:
-                    state.popularMoviesResModel?.results?.length ?? 0,
-                    headingText: AppStrings.popularMovies,
-                    child: SizedBox(
-                      height: 220,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount:
-                          state.popularMoviesResModel?.results?.length ??
-                              0,
-                          itemBuilder: (context, index) {
-                            popular.Movie model =
-                            state.popularMoviesResModel!.results![index];
-                            return _CardView(
-                              title: model.title ?? '',
-                              imagePath: ApiEndPoints.imageURL +
-                                  (model.posterPath ?? ''),
-                            );
-                          }),
-                    ),
-                  );
-                }),
-            BlocBuilder(
-                bloc: TopRatedMovieBloc()
-                  ..add(GetTopRatedMoviesApiRequestEvent(
-                      pageNo: 1, language: 'en-us')),
-                builder: (context, TopRatedState state) {
-                  return _ViewWrapper(
-                    showLoader: state.showLoader,
-                    listLength:
-                    state.topRatedMovieResModel?.results?.length ?? 0,
-                    headingText: AppStrings.topRatedMovies,
-                    child: SizedBox(
-                      height: 220,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount:
-                          state.topRatedMovieResModel?.results?.length ??
-                              0,
-                          itemBuilder: (context, index) {
-                            top_rated.Result model =
-                            state.topRatedMovieResModel!.results![index];
-                            return _CardView(
-                              title: model.title ?? '',
-                              imagePath: ApiEndPoints.imageURL +
-                                  (model.posterPath ?? ''),
-                            );
-                          }),
-                    ),
-                  );
-                }),
-            BlocBuilder(
-                bloc: UpcomingMoviesBloc()
-                  ..add(GetUpcomingMoviesApiRequestEvent(
-                      pageNo: 1, language: 'en-us')),
-                builder: (context, UpcomingMoviesState state) {
-                  return _ViewWrapper(
-                    showLoader: state.showLoader,
-                    listLength:
-                    state.upcomingMovieResModel?.results?.length ?? 0,
-                    headingText: AppStrings.upcomingMovies,
-                    child: SizedBox(
-                      height: 220,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount:
-                          state.upcomingMovieResModel?.results?.length ??
-                              0,
-                          itemBuilder: (context, index) {
-                            upcoming.Result model =
-                            state.upcomingMovieResModel!.results![index];
-                            return _CardView(
-                              title: model.title ?? '',
-                              imagePath: ApiEndPoints.imageURL +
-                                  (model.posterPath ?? ''),
-                            );
-                          }),
-                    ),
-                  );
-                }),
-            BlocBuilder(
-                bloc: NowPlayingBloc()
-                  ..add(GetNowPlayingApiRequestEvent(
-                      pageNo: 1, language: 'en-us')),
-                builder: (context, NowPlayingState state) {
-                  return _ViewWrapper(
-                    showLoader: state.showLoader,
-                    listLength:
-                    state.nowPlayingMovieResModel?.results?.length ?? 0,
                     headingText: AppStrings.nowPlayingMovies,
-                    child: SizedBox(
-                      height: 220,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: state
-                              .nowPlayingMovieResModel?.results?.length ??
-                              0,
-                          itemBuilder: (context, index) {
-                            now_playing.Movie model = state
-                                .nowPlayingMovieResModel!.results![index];
-                            return _CardView(
-                              title: model.title ?? '',
-                              imagePath: ApiEndPoints.imageURL +
-                                  (model.posterPath ?? ''),
-                            );
-                          }),
-                    ),
+                    listOfResult: state.movieResModel?.results ?? [],
                   );
                 }),
-          ],
+                BlocBuilder(
+                    bloc: TopRatedMovieBloc()
+                      ..add(GetTopRatedMoviesApiRequestEvent(
+                          pageNo: 1, language: 'en-us')),
+                    builder: (context, TopRatedState state) {
+                      return _ViewWrapper(
+                        showLoader: state.showLoader,
+                        headingText: AppStrings.nowPlayingMovies,
+                        listOfResult: state.movieResModel?.results ?? [],
+                      );
+                    }),
+                BlocBuilder(
+                    bloc: UpcomingMoviesBloc()
+                      ..add(GetUpcomingMoviesApiRequestEvent(
+                          pageNo: 1, language: 'en-us')),
+                    builder: (context, UpcomingMoviesState state) {
+                      return _ViewWrapper(
+                        showLoader: state.showLoader,
+                        headingText: AppStrings.nowPlayingMovies,
+                        listOfResult: state.movieResModel?.results ?? [],
+                      );
+                    }),
+                BlocBuilder(
+                    bloc: NowPlayingBloc()
+                      ..add(GetNowPlayingApiRequestEvent(
+                          pageNo: 1, language: 'en-us')),
+                    builder: (context, NowPlayingState state) {
+                      return _ViewWrapper(
+                        showLoader: state.showLoader,
+                        headingText: AppStrings.nowPlayingMovies,
+                        listOfResult: state.movieResModel?.results ?? [],
+                      );
+                    }),
+              ],
+            ),
+          ),
         ),
-      ),
-    ),
-
       ),
     );
   }
@@ -174,11 +95,25 @@ class _CardView extends StatelessWidget {
     return Card(
       child: Column(
         children: [
-          Image.network(
-            imagePath,
+          NetworkCacheImage(
+            imageUrl: imagePath,
             height: 150,
-            fit: BoxFit.fill,
+            boxFit: BoxFit.fill,
             width: 150,
+            errorWidget: (context, string, _) {
+              return Icon(
+                Icons.image,
+                size: 150,
+                color: Colors.grey,
+              );
+            },
+            placeholder: (context, value) {
+              return Icon(
+                Icons.image,
+                size: 150,
+                color: Colors.grey,
+              );
+            },
           ),
           TextView(
             title: title,
@@ -195,16 +130,14 @@ class _CardView extends StatelessWidget {
 
 class _ViewWrapper extends StatelessWidget {
   final bool showLoader;
-  final int listLength;
   final String headingText;
-  final Widget child;
+  final List<Result> listOfResult;
 
   const _ViewWrapper(
       {super.key,
       required this.headingText,
-      required this.child,
-      required this.listLength,
-      required this.showLoader});
+      required this.showLoader,
+      required this.listOfResult});
 
   @override
   Widget build(BuildContext context) {
@@ -213,7 +146,7 @@ class _ViewWrapper extends StatelessWidget {
         height: 40,
         child: Center(child: CircularProgressIndicator()),
       );
-    } else if (listLength == 0) {
+    } else if (listOfResult.isEmpty) {
       return const SizedBox.shrink();
     } else {
       return Column(
@@ -225,7 +158,20 @@ class _ViewWrapper extends StatelessWidget {
             fontWeight: FontWeight.w600,
             margin: EdgeInsets.only(top: 20, left: 20),
           ),
-          child
+          SizedBox(
+            height: 220,
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: listOfResult.length,
+                itemBuilder: (context, index) {
+                  Result model = listOfResult[index];
+                  return _CardView(
+                    title: model.title ?? '',
+                    imagePath:
+                        ApiEndPoints.imageURL + (model.backdropPath ?? ''),
+                  );
+                }),
+          ),
         ],
       );
     }

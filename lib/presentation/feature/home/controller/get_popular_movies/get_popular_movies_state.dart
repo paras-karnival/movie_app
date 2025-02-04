@@ -4,31 +4,29 @@ class GetPopularMoviesState extends Equatable {
   final bool showLoader;
   final String hasMessage;
   final String hasError;
-  final PopularMoviesResModel? popularMoviesResModel;
+  final MovieResModel? movieResModel;
 
   @override
-  List<dynamic> get props =>
-      [showLoader, hasError, hasMessage, popularMoviesResModel];
+  List<dynamic> get props => [showLoader, hasError, hasMessage, movieResModel];
 
   const GetPopularMoviesState({
     required this.showLoader,
     required this.hasMessage,
     required this.hasError,
-     this.popularMoviesResModel,
+    this.movieResModel,
   });
 
   GetPopularMoviesState copyWith({
     bool? showLoader,
     String? hasMessage,
     String? hasError,
-    PopularMoviesResModel? popularMoviesResModel,
+    MovieResModel? movieResModel,
   }) {
     return GetPopularMoviesState(
       showLoader: showLoader ?? this.showLoader,
       hasMessage: hasMessage ?? this.hasMessage,
       hasError: hasError ?? this.hasError,
-      popularMoviesResModel:
-          popularMoviesResModel ?? this.popularMoviesResModel,
+      movieResModel: movieResModel ?? this.movieResModel,
     );
   }
 }
