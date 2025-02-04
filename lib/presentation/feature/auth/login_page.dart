@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movie_app/config/routes/app_routes_name.dart';
 import 'package:movie_app/core/utils/app_strings.dart';
+import 'package:movie_app/core/utils/debug_logger.dart';
 import 'package:movie_app/core/utils/responsive_util.dart';
 import 'package:movie_app/core/utils/validator.dart';
 import 'package:movie_app/presentation/common_widgets/app_text_field.dart';
 import 'package:movie_app/presentation/common_widgets/common_widgets.dart';
 import 'package:movie_app/presentation/common_widgets/snackbar/error_snackbar_view.dart';
-import 'package:movie_app/presentation/common_widgets/snackbar/info_snackbar_view.dart';
 import 'package:movie_app/presentation/feature/auth/controller/login_bloc.dart';
 
 class LoginPage extends StatefulWidget {
@@ -43,11 +43,11 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
+          debuggerAdvance(tag: "state is", value: state);
           if (state is ErrorLoginState) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(errorSnackBarView(message: state.error));
           } else if (state is LoadedLoginState) {
-
             // ScaffoldMessenger.of(context).showSnackBar(
             //     infoSnackBarView(message: AppStrings.successfullyLogin));
             context.goNamed(AppRoutesName.homePage);
@@ -94,12 +94,10 @@ class _LoginPageState extends State<LoginPage> {
                           title: AppStrings.login,
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              context
-                                  .read<LoginBloc>()
-                                  .add(LoginRequestEvent(
-                                email: _textEditingControllerEmail.text,
-                                password: _textEditingControllerPassword.text
-                              ));
+                              context.read<LoginBloc>().add(LoginRequestEvent(
+                                  email: _textEditingControllerEmail.text,
+                                  password:
+                                      _textEditingControllerPassword.text));
                             }
                           });
                     }
