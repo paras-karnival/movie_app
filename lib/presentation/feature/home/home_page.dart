@@ -17,34 +17,8 @@ import 'package:movie_app/presentation/feature/home/controller/now_playing/now_p
 import 'controller/top_rated/top_rated_movie_bloc.dart';
 import 'controller/upcoming/upcoming_movies_bloc.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   // context.read<GetPopularMoviesBloc>().add(GetPopularMoviesAPIRequestEvent(pageNo: 1, language: 'en-us'));
-    // });
-
-    // BlocProvider(
-    //     create: (context) => TopRatedMovieBloc()
-    //       ..add(GetTopRatedMoviesApiRequestEvent(
-    //           pageNo: 1, language: 'en-us'))),
-    // BlocProvider(
-    //     create: (context) => UpcomingMoviesBloc()
-    //       ..add(GetUpcomingMoviesApiRequestEvent(
-    //           pageNo: 1, language: 'en-us'))),
-    // BlocProvider(
-    //     create: (context) => NowPlayingBloc()
-    //       ..add(
-    //           GetNowPlayingApiRequestEvent(pageNo: 1, language: 'en-us'))),
-  }
 
   @override
   Widget build(BuildContext context) {
