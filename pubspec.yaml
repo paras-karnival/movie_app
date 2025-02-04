@@ -53,6 +53,7 @@ dependencies:
 #  Util
   cached_network_image: ^3.4.1
   flutter_dotenv: ^5.2.1
+  dio_smart_retry: ^7.0.1
 
 
 

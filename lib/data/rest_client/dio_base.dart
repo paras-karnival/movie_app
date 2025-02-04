@@ -1,5 +1,6 @@
 
 import 'package:dio/dio.dart';
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:movie_app/core/utils/debug_logger.dart';
 
 
@@ -26,6 +27,21 @@ class DioClient {
 
   DioClient(this._dio) {
     debuggerAdvance(tag: "Dio info", value: ' ${_dio.options.baseUrl}');
+    addRetryInterceptors();
+  }
+
+  addRetryInterceptors() {
+    debuggerAdvance(tag: "Retry interceptor ", value: "working");
+    _dio.interceptors.add(RetryInterceptor(
+      dio: _dio,
+      // logPrint: print, // specify log function
+      retries: 1, // retry count
+      retryDelays: const [
+        Duration(seconds: 3), // wait 1 sec before first retry
+        // Duration(seconds: 2), // wait 2 sec before second retry
+        // Duration(seconds: 3), // wait 3 sec before third retry
+      ],
+    ));
   }
 
   // Get:-----------------------------------------------------------------------

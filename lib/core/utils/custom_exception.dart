@@ -1,6 +1,6 @@
-class LocationException implements Exception {
+class CustomException implements Exception {
   final String exception;
-  LocationException(this.exception);
+  CustomException(this.exception);
 }
 
 // class LocationPermissionDeniedForeverException implements Exception {

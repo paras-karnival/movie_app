@@ -23,133 +23,141 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: CustomAppbar(
-          title: AppStrings.movieu,
-          hasArrow: false,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_)=> GetPopularMoviesBloc()
+            ..add(GetPopularMoviesAPIRequestEvent(
+                pageNo: 1, language: 'en-us'))),
+        ],
+        child:  Scaffold(
+      appBar: CustomAppbar(
+      title: AppStrings.movieu,
+        hasArrow: false,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            BlocBuilder<GetPopularMoviesBloc , GetPopularMoviesState>(
+                // bloc: GetPopularMoviesBloc()
+                //   ..add(GetPopularMoviesAPIRequestEvent(
+                //       pageNo: 1, language: 'en-us')),
+                builder: (context, GetPopularMoviesState state) {
+                  return _ViewWrapper(
+                    showLoader: state.showLoader,
+                    listLength:
+                    state.popularMoviesResModel?.results?.length ?? 0,
+                    headingText: AppStrings.popularMovies,
+                    child: SizedBox(
+                      height: 220,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount:
+                          state.popularMoviesResModel?.results?.length ??
+                              0,
+                          itemBuilder: (context, index) {
+                            popular.Movie model =
+                            state.popularMoviesResModel!.results![index];
+                            return _CardView(
+                              title: model.title ?? '',
+                              imagePath: ApiEndPoints.imageURL +
+                                  (model.posterPath ?? ''),
+                            );
+                          }),
+                    ),
+                  );
+                }),
+            BlocBuilder(
+                bloc: TopRatedMovieBloc()
+                  ..add(GetTopRatedMoviesApiRequestEvent(
+                      pageNo: 1, language: 'en-us')),
+                builder: (context, TopRatedState state) {
+                  return _ViewWrapper(
+                    showLoader: state.showLoader,
+                    listLength:
+                    state.topRatedMovieResModel?.results?.length ?? 0,
+                    headingText: AppStrings.topRatedMovies,
+                    child: SizedBox(
+                      height: 220,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount:
+                          state.topRatedMovieResModel?.results?.length ??
+                              0,
+                          itemBuilder: (context, index) {
+                            top_rated.Result model =
+                            state.topRatedMovieResModel!.results![index];
+                            return _CardView(
+                              title: model.title ?? '',
+                              imagePath: ApiEndPoints.imageURL +
+                                  (model.posterPath ?? ''),
+                            );
+                          }),
+                    ),
+                  );
+                }),
+            BlocBuilder(
+                bloc: UpcomingMoviesBloc()
+                  ..add(GetUpcomingMoviesApiRequestEvent(
+                      pageNo: 1, language: 'en-us')),
+                builder: (context, UpcomingMoviesState state) {
+                  return _ViewWrapper(
+                    showLoader: state.showLoader,
+                    listLength:
+                    state.upcomingMovieResModel?.results?.length ?? 0,
+                    headingText: AppStrings.upcomingMovies,
+                    child: SizedBox(
+                      height: 220,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount:
+                          state.upcomingMovieResModel?.results?.length ??
+                              0,
+                          itemBuilder: (context, index) {
+                            upcoming.Result model =
+                            state.upcomingMovieResModel!.results![index];
+                            return _CardView(
+                              title: model.title ?? '',
+                              imagePath: ApiEndPoints.imageURL +
+                                  (model.posterPath ?? ''),
+                            );
+                          }),
+                    ),
+                  );
+                }),
+            BlocBuilder(
+                bloc: NowPlayingBloc()
+                  ..add(GetNowPlayingApiRequestEvent(
+                      pageNo: 1, language: 'en-us')),
+                builder: (context, NowPlayingState state) {
+                  return _ViewWrapper(
+                    showLoader: state.showLoader,
+                    listLength:
+                    state.nowPlayingMovieResModel?.results?.length ?? 0,
+                    headingText: AppStrings.nowPlayingMovies,
+                    child: SizedBox(
+                      height: 220,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: state
+                              .nowPlayingMovieResModel?.results?.length ??
+                              0,
+                          itemBuilder: (context, index) {
+                            now_playing.Movie model = state
+                                .nowPlayingMovieResModel!.results![index];
+                            return _CardView(
+                              title: model.title ?? '',
+                              imagePath: ApiEndPoints.imageURL +
+                                  (model.posterPath ?? ''),
+                            );
+                          }),
+                    ),
+                  );
+                }),
+          ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              BlocBuilder(
-                  bloc: GetPopularMoviesBloc()
-                    ..add(GetPopularMoviesAPIRequestEvent(
-                        pageNo: 1, language: 'en-us')),
-                  builder: (context, GetPopularMoviesState state) {
-                    return _ViewWrapper(
-                      showLoader: state.showLoader,
-                      listLength:
-                          state.popularMoviesResModel?.results?.length ?? 0,
-                      headingText: AppStrings.popularMovies,
-                      child: SizedBox(
-                        height: 220,
-                        child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount:
-                                state.popularMoviesResModel?.results?.length ??
-                                    0,
-                            itemBuilder: (context, index) {
-                              popular.Movie model =
-                                  state.popularMoviesResModel!.results![index];
-                              return _CardView(
-                                title: model.title ?? '',
-                                imagePath: ApiEndPoints.imageURL +
-                                    (model.posterPath ?? ''),
-                              );
-                            }),
-                      ),
-                    );
-                  }),
-              BlocBuilder(
-                  bloc: TopRatedMovieBloc()
-                    ..add(GetTopRatedMoviesApiRequestEvent(
-                        pageNo: 1, language: 'en-us')),
-                  builder: (context, TopRatedState state) {
-                    return _ViewWrapper(
-                      showLoader: state.showLoader,
-                      listLength:
-                          state.topRatedMovieResModel?.results?.length ?? 0,
-                      headingText: AppStrings.topRatedMovies,
-                      child: SizedBox(
-                        height: 220,
-                        child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount:
-                                state.topRatedMovieResModel?.results?.length ??
-                                    0,
-                            itemBuilder: (context, index) {
-                              top_rated.Result model =
-                                  state.topRatedMovieResModel!.results![index];
-                              return _CardView(
-                                title: model.title ?? '',
-                                imagePath: ApiEndPoints.imageURL +
-                                    (model.posterPath ?? ''),
-                              );
-                            }),
-                      ),
-                    );
-                  }),
-              BlocBuilder(
-                  bloc: UpcomingMoviesBloc()
-                    ..add(GetUpcomingMoviesApiRequestEvent(
-                        pageNo: 1, language: 'en-us')),
-                  builder: (context, UpcomingMoviesState state) {
-                    return _ViewWrapper(
-                      showLoader: state.showLoader,
-                      listLength:
-                          state.upcomingMovieResModel?.results?.length ?? 0,
-                      headingText: AppStrings.upcomingMovies,
-                      child: SizedBox(
-                        height: 220,
-                        child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount:
-                                state.upcomingMovieResModel?.results?.length ??
-                                    0,
-                            itemBuilder: (context, index) {
-                              upcoming.Result model =
-                                  state.upcomingMovieResModel!.results![index];
-                              return _CardView(
-                                title: model.title ?? '',
-                                imagePath: ApiEndPoints.imageURL +
-                                    (model.posterPath ?? ''),
-                              );
-                            }),
-                      ),
-                    );
-                  }),
-              BlocBuilder(
-                  bloc: NowPlayingBloc()
-                    ..add(GetNowPlayingApiRequestEvent(
-                        pageNo: 1, language: 'en-us')),
-                  builder: (context, NowPlayingState state) {
-                    return _ViewWrapper(
-                      showLoader: state.showLoader,
-                      listLength:
-                          state.nowPlayingMovieResModel?.results?.length ?? 0,
-                      headingText: AppStrings.nowPlayingMovies,
-                      child: SizedBox(
-                        height: 220,
-                        child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: state
-                                    .nowPlayingMovieResModel?.results?.length ??
-                                0,
-                            itemBuilder: (context, index) {
-                              now_playing.Movie model = state
-                                  .nowPlayingMovieResModel!.results![index];
-                              return _CardView(
-                                title: model.title ?? '',
-                                imagePath: ApiEndPoints.imageURL +
-                                    (model.posterPath ?? ''),
-                              );
-                            }),
-                      ),
-                    );
-                  }),
-            ],
-          ),
-        ),
+      ),
+    ),
+
       ),
     );
   }

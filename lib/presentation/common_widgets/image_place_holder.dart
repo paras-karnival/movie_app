@@ -28,7 +28,7 @@ class ImagePlaceHolder extends StatelessWidget {
         heightFactor: imageHeightPercentage,
         widthFactor: imageWidthPercentage,
         child: Image.asset(
-          imagePath ?? AppAssets.commonImagePlaceHolder,
+          imagePath ?? "AppAssets.commonImagePlaceHolder",
           fit: BoxFit.fill,
           color: Colors.grey,
         ),
