@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_app/config/dependency_injection/di.dart' as serviceLocator;
 import 'package:movie_app/config/routes/app_router.dart';
 import 'package:movie_app/core/utils/responsive_util.dart';
-import 'package:movie_app/presentation/feature/auth/controller/login_bloc.dart';
-import 'package:movie_app/presentation/feature/home/controller/get_popular_movies/get_popular_movies_bloc.dart';
-import 'package:movie_app/presentation/feature/home/controller/home_bloc.dart';
 
 import 'config/dependency_injection/di.dart';
 
