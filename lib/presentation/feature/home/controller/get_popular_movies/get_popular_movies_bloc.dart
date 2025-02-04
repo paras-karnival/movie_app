@@ -17,6 +17,8 @@ class GetPopularMoviesBloc extends Bloc<GetPopularMoviesEvent, GetPopularMoviesS
     on<GetPopularMoviesAPIRequestEvent>((event, emit) async {
       try {
         emit(state.copyWith(showLoader: true ,hasMessage: '',hasError: '', popularMoviesResModel: null));
+
+        await Future.delayed(Duration(seconds: 3));
         PopularMoviesResModel popularMoviesResModel =
             await di<AppRepo>().getAllPopularMovies(
             language: event.language,
