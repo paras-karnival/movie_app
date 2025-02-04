@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart' as dio;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_app/core/utils/app_strings.dart';
 import 'package:movie_app/data/data_utility/api_end_points.dart';
 import 'package:movie_app/data/data_utility/exception_handler.dart';
@@ -18,7 +19,7 @@ class AppRepoImpl implements AppRepo {
 
   Map<String, String> getHTTPHeader() {
     return {
-      "Authorization": 'Bearer ${AppStrings.tmdbikey}',
+      "Authorization": 'Bearer ${dotenv.env['TMDBI_KEY']}',
       'Content-type': 'application/json',
     };
   }

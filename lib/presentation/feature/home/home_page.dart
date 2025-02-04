@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_app/core/utils/app_strings.dart';
+import 'package:movie_app/core/utils/debug_logger.dart';
 import 'package:movie_app/data/data_utility/api_end_points.dart';
 import 'package:movie_app/domain/models/now_playing_movie_res_model.dart'
     as now_playing;
@@ -49,6 +51,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppbar(title: AppStrings.movieu,

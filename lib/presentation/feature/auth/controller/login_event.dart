@@ -5,7 +5,9 @@ sealed class LoginEvent extends Equatable {
 }
 
 class LoginRequestEvent extends LoginEvent {
-  const LoginRequestEvent();
+  final String email;
+  final String password;
+  const LoginRequestEvent({required this.email,required this.password});
   @override
   List<Object?> get props => [];
 }
