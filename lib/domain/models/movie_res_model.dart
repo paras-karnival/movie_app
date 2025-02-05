@@ -7,7 +7,7 @@ part 'movie_res_model.g.dart';
 @freezed
 class MovieResModel with _$MovieResModel {
   factory MovieResModel({
-    List<Result>? results,
+    @Default([]) List<Result>? results,
   }) = _MovieResModel;
 
   factory MovieResModel.fromJson(Map<String, dynamic> json) =>

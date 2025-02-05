@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/core/utils/app_strings.dart';
+import 'package:movie_app/core/utils/debug_logger.dart';
 import 'package:movie_app/data/data_utility/api_end_points.dart';
 import 'package:movie_app/domain/models/movie_res_model.dart';
 import 'package:movie_app/presentation/common_widgets/common_widgets.dart';
@@ -10,73 +11,77 @@ import 'package:movie_app/presentation/feature/home/controller/now_playing/now_p
 import 'controller/top_rated/top_rated_movie_bloc.dart';
 import 'controller/upcoming/upcoming_movies_bloc.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    debuggerAdvance(tag: "", value: "homepage initState");
+  }
+
+  @override
   Widget build(BuildContext context) {
+    debuggerAdvance(tag: "", value: "build method render");
     return SafeArea(
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-              create: (_) => GetPopularMoviesBloc()
-                ..add(GetPopularMoviesAPIRequestEvent(
-                    pageNo: 1, language: 'en-us'))),
-        ],
-        child: Scaffold(
-          appBar: CustomAppbar(
-            title: AppStrings.movieu,
-            hasArrow: false,
-          ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                BlocBuilder<GetPopularMoviesBloc, GetPopularMoviesState>(
-                    // bloc: GetPopularMoviesBloc()
-                    //   ..add(GetPopularMoviesAPIRequestEvent(
-                    //       pageNo: 1, language: 'en-us')),
-                    builder: (context, GetPopularMoviesState state) {
-                  return _ViewWrapper(
-                    showLoader: state.showLoader,
-                    headingText: AppStrings.nowPlayingMovies,
-                    listOfResult: state.movieResModel?.results ?? [],
-                  );
-                }),
-                BlocBuilder(
-                    bloc: TopRatedMovieBloc()
-                      ..add(GetTopRatedMoviesApiRequestEvent(
-                          pageNo: 1, language: 'en-us')),
-                    builder: (context, TopRatedState state) {
-                      return _ViewWrapper(
-                        showLoader: state.showLoader,
-                        headingText: AppStrings.nowPlayingMovies,
-                        listOfResult: state.movieResModel?.results ?? [],
-                      );
-                    }),
-                BlocBuilder(
-                    bloc: UpcomingMoviesBloc()
-                      ..add(GetUpcomingMoviesApiRequestEvent(
-                          pageNo: 1, language: 'en-us')),
-                    builder: (context, UpcomingMoviesState state) {
-                      return _ViewWrapper(
-                        showLoader: state.showLoader,
-                        headingText: AppStrings.nowPlayingMovies,
-                        listOfResult: state.movieResModel?.results ?? [],
-                      );
-                    }),
-                BlocBuilder(
-                    bloc: NowPlayingBloc()
-                      ..add(GetNowPlayingApiRequestEvent(
-                          pageNo: 1, language: 'en-us')),
-                    builder: (context, NowPlayingState state) {
-                      return _ViewWrapper(
-                        showLoader: state.showLoader,
-                        headingText: AppStrings.nowPlayingMovies,
-                        listOfResult: state.movieResModel?.results ?? [],
-                      );
-                    }),
-              ],
-            ),
+      child: Scaffold(
+        appBar: CustomAppbar(
+          title: AppStrings.movieu,
+          hasArrow: false,
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              BlocBuilder<GetPopularMoviesBloc, GetPopularMoviesState>(
+                  bloc: GetPopularMoviesBloc()
+                    ..add(GetPopularMoviesAPIRequestEvent(
+                        pageNo: 1, language: 'en-us')),
+                  builder: (context, GetPopularMoviesState state) {
+                    return _ViewWrapper(
+                      showLoader: state.showLoader,
+                      headingText: AppStrings.popularMovies,
+                      listOfResult: state.movieResModel?.results ?? [],
+                    );
+                  }),
+              BlocBuilder(
+                  bloc: TopRatedMovieBloc()
+                    ..add(GetTopRatedMoviesApiRequestEvent(
+                        pageNo: 1, language: 'en-us')),
+                  builder: (context, TopRatedState state) {
+                    return _ViewWrapper(
+                      showLoader: state.showLoader,
+                      headingText: AppStrings.topRatedMovies,
+                      listOfResult: state.movieResModel?.results ?? [],
+                    );
+                  }),
+              BlocBuilder(
+                  bloc: UpcomingMoviesBloc()
+                    ..add(GetUpcomingMoviesApiRequestEvent(
+                        pageNo: 1, language: 'en-us')),
+                  builder: (context, UpcomingMoviesState state) {
+                    return _ViewWrapper(
+                      showLoader: state.showLoader,
+                      headingText: AppStrings.upcomingMovies,
+                      listOfResult: state.movieResModel?.results ?? [],
+                    );
+                  }),
+              BlocBuilder(
+                  bloc: NowPlayingBloc()
+                    ..add(GetNowPlayingApiRequestEvent(
+                        pageNo: 1, language: 'en-us')),
+                  builder: (context, NowPlayingState state) {
+                    return _ViewWrapper(
+                      showLoader: state.showLoader,
+                      headingText: AppStrings.nowPlayingMovies,
+                      listOfResult: state.movieResModel?.results ?? [],
+                    );
+                  }),
+            ],
           ),
         ),
       ),
